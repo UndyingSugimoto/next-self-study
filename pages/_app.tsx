@@ -1,9 +1,10 @@
 import * as React from "react";
-import { NextComponentType, NextPageContext } from "next";
+import "../styles/global.css";
 
-export default function App(
-  Component: NextComponentType<NextPageContext, any, {}>,
-  pageProps: any
-) {
-  return <Component {...pageProps} />;
-}
+import { AppProps } from "next/app";
+
+const App = ({ Component, pageProps }: AppProps) => (
+  <Component {...pageProps} />
+);
+
+export default App;

@@ -10,13 +10,15 @@ type Params = {
   id: string;
 };
 
-type Data = {
+export type Data = {
   id: string;
+  contentHtml: string;
   date: Date;
   title: string;
 };
 
 export default function Post(postData: Data) {
+  console.log("html :" + postData.contentHtml);
   return (
     <Layout home={false}>
       {postData.title}
@@ -24,6 +26,8 @@ export default function Post(postData: Data) {
       {postData.id}
       <br />
       {postData.date}
+      <br />
+      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
     </Layout>
   );
 }
@@ -38,7 +42,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(props: Props) {
   console.log("props :" + props);
-  const postData = getPostData(props.params.id);
+  const postData = await getPostData(props.params.id);
+  console.log("postData.contentHtml :" + postData.contentHtml);
   return {
     props: {
       postData,

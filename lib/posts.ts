@@ -1,6 +1,9 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import remark from "remark";
+import html from "remark-html";
+import { Data } from "../pages/posts/[id]";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
@@ -63,7 +66,7 @@ export function getAllPostIds() {
   });
 }
 
-export function getPostData(id: string) {
+export async function getPostData(id: string) {
   const fullPath = path.join(postsDirectory, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
 
@@ -73,10 +76,21 @@ export function getPostData(id: string) {
   const castDate = date as Date;
   const castTitle = title as string;
 
-  // データを id と組み合わせる
-  return {
+  // マークダウンを HTML 文字列に変換するために remark を使う
+  console.log("content :" + matterResult.content);
+  const processedContent = await remark()
+    .use(html.plugins)
+    .process(matterResult.content);
+  const contentHtml = processedContent.toString();
+  console.log("contentHtml :" + contentHtml);
+
+  const result: Data = {
     id: id,
+    contentHtml: contentHtml,
     date: castDate,
     title: castTitle,
   };
+
+  // データを id と組み合わせる
+  return result;
 }

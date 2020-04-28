@@ -6,8 +6,8 @@ import { getSortedPostsData } from "../lib/posts";
 type Props = {
   allPostsData: {
     id: string;
-    castDate: Date;
-    castTitle: string;
+    date: Date;
+    title: string;
   }[];
 };
 
@@ -28,13 +28,13 @@ export default function Home(props: Props) {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
-          {props.allPostsData.map(({ id, castDate, castTitle }) => (
+          {props.allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
-              {castTitle}
+              {title}
               <br />
               {id}
               <br />
-              {castDate}
+              {date}
             </li>
           ))}
         </ul>

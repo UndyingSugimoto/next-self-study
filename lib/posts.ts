@@ -23,17 +23,60 @@ export function getSortedPostsData() {
 
     // データを id と合わせる
     return {
-      id,
-      castDate,
-      castTitle,
+      id: id,
+      date: castDate,
+      title: castTitle,
     };
   });
   // 投稿を日付でソートする
   return allPostsData.sort((a, b) => {
-    if (a.castDate < b.castDate) {
+    if (a.date < b.date) {
       return 1;
     } else {
       return -1;
     }
   });
+}
+
+export function getAllPostIds() {
+  const fileNames = fs.readdirSync(postsDirectory);
+
+  // 以下のような配列を返します:
+  // [
+  //   {
+  //     params: {
+  //       id: 'ssg-ssr'
+  //     }
+  //   },
+  //   {
+  //     params: {
+  //       id: 'pre-rendering'
+  //     }
+  //   }
+  // ]
+  return fileNames.map((fileName) => {
+    return {
+      params: {
+        id: fileName.replace(/\.md$/, ""),
+      },
+    };
+  });
+}
+
+export function getPostData(id: string) {
+  const fullPath = path.join(postsDirectory, `${id}.md`);
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+
+  // 投稿のメタデータ部分を解析するために gray-matter を使う
+  const matterResult = matter(fileContents);
+  const { date, title } = matterResult.data;
+  const castDate = date as Date;
+  const castTitle = title as string;
+
+  // データを id と組み合わせる
+  return {
+    id: id,
+    date: castDate,
+    title: castTitle,
+  };
 }

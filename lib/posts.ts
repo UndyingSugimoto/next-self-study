@@ -77,12 +77,10 @@ export async function getPostData(id: string) {
   const castTitle = title as string;
 
   // マークダウンを HTML 文字列に変換するために remark を使う
-  console.log("content :" + matterResult.content);
   const processedContent = await remark()
     .use(html.plugins)
     .process(matterResult.content);
   const contentHtml = processedContent.toString();
-  console.log("contentHtml :" + contentHtml);
 
   const result: Data = {
     id: id,

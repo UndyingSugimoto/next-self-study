@@ -3,8 +3,8 @@ import { getAllPostIds, getPostData } from "../../lib/posts";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { ParsedUrlQuery } from "querystring";
 
-type Params = {
-  id: string;
+type Props = {
+  postData: Data;
 };
 
 export type Data = {
@@ -14,20 +14,21 @@ export type Data = {
   title: string;
 };
 
-export default function Post(postData: Data) {
-  console.log("id :" + postData.id);
-  console.log("content :" + postData.content);
-  console.log("date :" + postData.date);
-  console.log("title :" + postData.title);
+export default function Post(props: Props) {
+  console.log(props.postData);
+  console.log("id :" + props.postData.id);
+  console.log("content :" + props.postData.content);
+  console.log("date :" + props.postData.date);
+  console.log("title :" + props.postData.title);
   return (
     <Layout home={false}>
-      {postData.title}
+      {props.postData.title}
       <br />
-      {postData.id}
+      {props.postData.id}
       <br />
-      {postData.date}
+      {props.postData.date}
       <br />
-      <div dangerouslySetInnerHTML={{ __html: postData.content }} />
+      <div dangerouslySetInnerHTML={{ __html: props.postData.content }} />
     </Layout>
   );
 }

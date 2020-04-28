@@ -1,10 +1,7 @@
 import Layout from "../../components/layout";
 import { getAllPostIds, getPostData } from "../../lib/posts";
-
-type Props = {
-  params: Params;
-  fallback: boolean;
-};
+import { GetStaticProps, GetStaticPaths } from "next";
+import { ParsedUrlQuery } from "querystring";
 
 type Params = {
   id: string;
@@ -12,13 +9,16 @@ type Params = {
 
 export type Data = {
   id: string;
-  contentHtml: string;
+  content: string;
   date: Date;
   title: string;
 };
 
 export default function Post(postData: Data) {
-  console.log("html :" + postData.contentHtml);
+  console.log("id :" + postData.id);
+  console.log("content :" + postData.content);
+  console.log("date :" + postData.date);
+  console.log("title :" + postData.title);
   return (
     <Layout home={false}>
       {postData.title}
@@ -27,26 +27,27 @@ export default function Post(postData: Data) {
       <br />
       {postData.date}
       <br />
-      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+      <div dangerouslySetInnerHTML={{ __html: postData.content }} />
     </Layout>
   );
 }
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const paths = getAllPostIds();
   console.log("paths :" + paths);
   return {
     paths,
     fallback: false,
   };
-}
+};
 
-export async function getStaticProps(props: Props) {
-  console.log("props :" + props);
-  const postData = await getPostData(props.params.id);
-  console.log("postData.contentHtml :" + postData.contentHtml);
+// export async function getStaticProps(props: Props) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const id = params?.id as string;
+  const postData = await getPostData(id);
+  console.log("postData.contentHtml :" + postData.content);
   return {
     props: {
       postData,
     },
   };
-}
+};

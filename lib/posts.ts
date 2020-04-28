@@ -86,7 +86,7 @@ export async function getPostData(id: string) {
 
   const result: Data = {
     id: id,
-    contentHtml: contentHtml,
+    content: contentHtml,
     date: castDate,
     title: castTitle,
   };

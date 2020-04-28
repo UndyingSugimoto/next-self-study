@@ -2,6 +2,9 @@ import Layout from "../../components/layout";
 import { getAllPostIds, getPostData } from "../../lib/posts";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { ParsedUrlQuery } from "querystring";
+import Head from "next/head";
+import Date from "../../components/date";
+import utilStyles from "../../styles/utils.module.css";
 
 type Props = {
   postData: Data;
@@ -10,7 +13,7 @@ type Props = {
 export type Data = {
   id: string;
   content: string;
-  date: Date;
+  date: string;
   title: string;
 };
 
@@ -21,13 +24,16 @@ interface StaticProps extends ParsedUrlQuery {
 export default function Post(props: Props) {
   return (
     <Layout home={false}>
-      {props.postData.title}
-      <br />
-      {props.postData.id}
-      <br />
-      {props.postData.date}
-      <br />
-      <div dangerouslySetInnerHTML={{ __html: props.postData.content }} />
+      <Head>
+        <title>{props.postData.title}</title>
+      </Head>
+      <article>
+        <h1 className={utilStyles.headingXl}>{props.postData.title}</h1>
+        <div className={utilStyles.lightText}>
+          <Date date={props.postData.date} />
+        </div>
+        <div dangerouslySetInnerHTML={{ __html: props.postData.content }} />
+      </article>
     </Layout>
   );
 }

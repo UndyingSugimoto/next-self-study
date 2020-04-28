@@ -73,7 +73,7 @@ export async function getPostData(id: string) {
   // 投稿のメタデータ部分を解析するために gray-matter を使う
   const matterResult = matter(fileContents);
   const { date, title } = matterResult.data;
-  const castDate = date as Date;
+  const castDate = date as string;
   const castTitle = title as string;
 
   // マークダウンを HTML 文字列に変換するために remark を使う
